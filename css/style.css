@@ -1,0 +1,286 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', 'Avenir', 'Helvetica', 'Arial', sans-serif;
+    box-sizing: border-box;
+    color: var(--texto);
+}
+
+:root {
+    --fundo: #18243c;
+    --tarefa: #2b3a4e;
+    --texto: #8b98a8;
+    --botao-deletar: #d53e6b;
+    --botao-avancar: #2d6cea;
+}
+
+body {
+    background-color: var(--fundo);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+body button {
+    cursor: pointer;
+}
+
+#titulo {
+    margin-top: 50px;
+    width: 60vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#titulo > h1 {
+    align-self: center;
+    font-size: 3rem;
+}
+
+#titulo > button {
+    width: 55px !important;
+    height: 40px !important;
+}
+
+#container, #titulo {
+    display: flex;
+    margin: auto;
+}
+
+.colunas {
+    min-height: 75vh;
+    min-width: 20vw;
+    margin: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 15px;
+    box-shadow: 0 0 20px 6px #111a2bb3;
+    transition: .3s;
+}
+
+#coluna-feito p {
+    text-decoration: line-through !important;
+}
+
+.colunas:hover {
+    scale: 1.02;
+    box-shadow: 0 0 20px 12px #111a2bde;
+}
+
+.colunas > h3 {
+    margin: 10px 0;
+    font-size: 1.5rem;
+}
+
+.lista-tarefas {
+    display: flex;
+    padding-bottom: 10px;
+    align-items: center;
+    flex-direction: column;
+    height: 63vh;
+    width: 100%;
+    overflow-y: scroll;
+}
+
+.lista-tarefas::-webkit-scrollbar {
+    background-color: transparent;
+    width: 5px;
+}
+
+.lista-tarefas::-webkit-scrollbar-thumb {
+    background-color: var(--tarefa);
+    border-radius: 5px;
+}
+
+.tarefa {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--tarefa);
+    width: 93%;
+    min-height: 60px;
+    margin-bottom: 10px;
+    border-radius: 13px;
+    box-shadow: 0px 0px 10px 5px #111a2b77;
+    transition: .3s;
+}
+
+.tarefa:hover {
+    scale: 1.02;
+    box-shadow: 0px 0px 12px 9px #111a2b7e;
+}
+
+.container-tarefa {
+    display: flex;
+    margin: 0 10px;
+    align-items: center;
+}
+
+.container-tarefa > input[type='checkbox'] {
+    height: 25px;
+    width: 25px;
+    margin-right: 10px;
+}
+
+.container-tarefa p {
+    font-size: 1.1rem;
+}
+
+.container-tarefa button, body > div > button, .colunas form button  {
+    height: 30px;
+    width: 30px;
+    margin: 0 3px;
+    border-radius: 5px;
+    border: none;
+}
+
+.botao-deletar {
+    font-weight: bolder;
+    color: white;
+    background-color: var(--botao-deletar);
+    font-size: 1.04rem;
+    transition: .3s;
+}
+
+.botao-deletar:hover {
+    box-shadow: 0px 0px 19px 2px #d53e6ba8;
+}
+
+.botao-deletar:active {
+    background-color: #a33053;
+}
+
+.botao-avancar {
+    font-weight: bolder;
+    color: white;
+    background-color: var(--botao-avancar);
+    font-size: 1.04rem;
+    transition: .3s;
+}
+
+.botao-avancar:hover, .submit-modal:hover {
+    box-shadow: 0px 0px 19px 2px #2d6ceaa8;
+}
+
+.botao-avancar:active, .submit-modal:active {
+    background-color: #1f499b;
+}
+
+.colunas form {
+    height: 55px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 5px;
+}
+
+.colunas form button {
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    font-size: 1.3rem;
+}
+
+.input-adicionar {
+    padding-left: 10px;
+    font-size: 1rem;
+    height: 40px;
+    border-radius: 15px;
+    border: 1px solid var(--texto);
+    outline: none;
+    width: 80%;
+    background-color: transparent;
+}
+
+/* MODAL */
+
+#container-modal-bg {
+    display: flex;
+    background-color: var(--fundo);
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+#modal-cadastro {
+    display: none;
+}
+
+#modal-login {
+    display: none;
+}
+
+#modal-login, #modal-cadastro {
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--tarefa);
+    border-radius: 25px;
+    height: 80vh;
+    width: 60vh;
+}
+
+#modal-login > div, #modal-cadastro > div  {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#modal-login > div label, #modal-cadastro > div label {
+    align-self: flex-start;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+#modal-login h1, #modal-cadastro h1 {
+    margin: 50px 0;
+}
+
+#modal-login input, #modal-cadastro input {
+    background-color: transparent;
+    border: 1px solid var(--texto);
+    border-radius: 15px;
+    width: 100%;
+    height: 40px;
+    margin: 5px 0;
+    padding-left: 10px;
+    font-size: 1rem;
+    outline: none;
+    color: rgb(30, 115, 141);
+}
+
+.submit-modal {
+    width: 40% !important;
+    padding: 0 !important;
+    background-color: var(--botao-avancar) !important;
+    border: none !important;
+    color: white !important;
+    font-weight: bold;
+    margin: 100px 0 !important;
+    transition: .3s;
+    cursor: pointer;
+}
+
+#modal-login p, #modal-cadastro p {
+    margin-top: 10px;
+}
+
+#modal-login p button, #modal-cadastro p button {
+    color: rgb(30, 115, 141);
+    background-color: transparent;
+    border: none;
+    font-size: 1rem;
+    text-decoration: underline;
+    cursor: pointer;
+}

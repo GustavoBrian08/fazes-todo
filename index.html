@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>É o Fazes</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="js/scripts.js" type="module" defer></script>
+</head>
+<body>
+    <!-- LOGIN/MODAL -->
+    <div id="container-modal-bg">
+        <form id="modal-login" autocomplete="off">
+            <h1>É o Logas</h1>
+            <div>
+                <label for="">Email:</label>
+                <input type="email" id="email-login" placeholder="Digite seu email">
+                <label for="">Senha:</label>
+                <input type="password" id="password-login" placeholder="Senha">
+                <p>Não possui uma conta? <button type="button" id="botao-ir-cadastro">Cadastre-se!</button></p>
+            </div>
+            <input type="submit" value="Login" class="submit-modal">
+        </form>
+        <form id="modal-cadastro" autocomplete="off">
+            <h1>É o Cadastras</h1>
+            <div>
+                <label for="">Email:</label>
+                <input type="email" id="email-cadastro" placeholder="Digite seu email">
+                <label for="">Senha:</label>
+                <input type="password" id="password-cadastro" placeholder="Digite sua senha">
+                <label for="">Confirmar Senha:</label>
+                <input type="password" id="repassword-cadastro" placeholder="Confirmar senha">
+                <p>Já possui uma conta? <button type="button" id="botao-ir-login">Entrar!</button></p>
+            </div>
+            <input type="submit" value="Cadastrar" class="submit-modal">
+        </form>
+    </div>
+    <!-- TODO -->
+    <div id="titulo">
+        <div style="width: 7vw;"></div>
+        <h1>É o Fazes</h1>
+        <button class="botao-deletar" id="botao-deslogar">X</button>
+    </div>
+    <div id="container">
+        <div id="coluna-para-fazer" class="colunas">
+            <h3>Para Fazer</h3>
+            <div class="lista-tarefas">
+            </div>
+            <form id="form-para-fazer" autocomplete="off">
+                <input type="text" class="input-adicionar" placeholder="Adicionar Tarefa" id="input-para-fazer">
+                <button type="submit" class="botao-avancar">+</button>
+            </form>
+        </div>
+        <div id="coluna-fazendo" class="colunas">
+            <h3>Fazendo</h3>
+            <div class="lista-tarefas">
+            </div>
+            <form id="form-fazendo" autocomplete="off">
+                <input type="text" name="" class="input-adicionar" placeholder="Adicionar Tarefa" id="input-fazendo">
+                <button type="submit" class="botao-avancar">+</button>
+            </form>
+        </div>
+        <div id="coluna-feito" class="colunas">
+            <h3>Feito</h3>
+            <div class="lista-tarefas">
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    
+</body>
+</html>
