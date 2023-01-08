@@ -209,6 +209,7 @@ body button {
     right: 0;
     left: 0;
     bottom: 0;
+    height: 100vh;
 }
 
 #modal-cadastro {

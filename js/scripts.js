@@ -1,6 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-app.js"
-import { getFirestore, collection, addDoc, query, where, onSnapshot, orderBy, serverTimestamp, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-firestore.js"
+import { getFirestore, collection, addDoc, query, where, onSnapshot, serverTimestamp, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-firestore.js"
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-auth.js"
+
+// CONFIG DO FIREBASE
 
 const firebaseConfig = {
 apiKey: "AIzaSyAbQ2WoE4PiK7_YC0uwNTO5AW4yoOX1dCQ",
@@ -14,6 +16,8 @@ appId: "1:662946845055:web:05bf93e8e343b685650a4a"
 const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 const auth = getAuth(app)
+
+// FUNÇÃO PRA TOASTS PERSONALIZADOS
 
 const mensagem = (texto, status) => {
   let cor
@@ -48,7 +52,7 @@ const cadastrar = async () => {
         })
         .catch(() => mensagem('Erro ao cadastrar!', false))
     } else {
-        alert('Senhas diferentes!')
+        mensagem('Senhas diferentes!', false)
     }
 }
 
@@ -70,7 +74,7 @@ const logar = () => {
     irParaTodo()
   })
   .catch((error) => {
-    if(error.message == 'Firebase: Error (auth/wrong-password).'){mensagem('Email ou senha incorretos!', false)}
+    if(error.message == 'Firebase: Error (auth/wrong-password).'){ mensagem('Email ou senha incorretos!', false) }
   })
 }
 
@@ -82,12 +86,16 @@ formLogin.onsubmit = e => {
 
 // LOGOUT
 
-const deslogar = () => signOut(auth).then(() => sairDoTodo())
+const deslogar = () => signOut(auth).then(() => {
+  sairDoTodo()
+  mensagem('Usuário deslogado!', true)
+})
 
 const botaoDeslogar = document.getElementById('botao-deslogar')
 botaoDeslogar.onclick = () => deslogar()
 
-// TODO LIST -------------------
+
+// -------------------------- TODO LIST --------------------------
 
 // CREATE
 
@@ -101,7 +109,7 @@ const criarTarefa = async (tarefa, email, coluna) => {
     })
     
   } catch (e) {
-    console.error("Erro ao criar tarefa: ", e)
+    mensagem(`Erro ao criar tarefa: ${e}`, false)
   }
 }
 
@@ -153,9 +161,9 @@ const carregarTarefa = (nomeDaTarefa, coluna, statusTarefa) => {
   coluna.children[1].appendChild(tarefa)
 }
 
-// UPTDATE
+// UPDATE
 
-const atualizarTarefa = (classe, id, tarefa, valorColuna, valorStatus, coluna, inicio) => {
+const atualizarTarefa = (classe, id, tarefa, valorColuna, valorStatus) => {
   const botaoAtualizar = document.getElementsByClassName(classe)
   
   for(let i = 0; i < botaoAtualizar.length; i++){
@@ -164,9 +172,6 @@ const atualizarTarefa = (classe, id, tarefa, valorColuna, valorStatus, coluna, i
     botao.addEventListener('click', async () => {
       if(tarefa == botao.parentElement.parentElement.children[0].children[valorColuna].innerHTML){
         botao.parentElement.parentElement.remove()
-        // inicio ? '' : carregarTarefa(tarefa, coluna, valorStatus)
-        console.log('funcao ativada')
-
         await updateDoc(doc(db, "Tarefas", id), {
           status: valorStatus
         })
@@ -211,11 +216,28 @@ const deletarTarefa = (id, tarefa) => {
   }
 }
 
+// CORRIGE E EVITA ALGUNS BUGS
+
+let criouTarefa
+const removerDuplicatas = (tarefa) => {
+  const nomeTarefa = document.getElementsByClassName('nome-tarefa')
+  for(let i = 0; i < nomeTarefa.length; i++){
+    if(tarefa == nomeTarefa[i].innerHTML && criouTarefa){
+      nomeTarefa[i].parentElement.parentElement.remove()
+      criouTarefa = false
+    }
+  }
+}
+
+
+// ------------ MODAIS --------------
+
 const loginModal = document.getElementById('modal-login')
 const cadastroModal = document.getElementById('modal-cadastro')
 const modalBG = document.getElementById('container-modal-bg')
 
 // MODAL LOGIN
+
 const irParaLogin = function(){
   cadastroModal.style.display = 'none'
   loginModal.style.display = 'flex'
@@ -225,6 +247,7 @@ const botaoIrLogin = document.getElementById('botao-ir-login')
 botaoIrLogin.onclick = () => irParaLogin()
 
 // MODAL CADASTRO
+
 const irParaCadastro = function(){
   loginModal.style.display = 'none'
   cadastroModal.style.display = 'flex'
@@ -244,6 +267,7 @@ const sairDoTodo = function(){
   irParaLogin()
 }
 
+
 // STATUS DO USUÁRIO
 
 const colunaFazer = document.getElementById('coluna-para-fazer')
@@ -251,18 +275,17 @@ const colunaFazendo = document.getElementById('coluna-fazendo')
 const colunaFeito = document.getElementById('coluna-feito')
 
 onAuthStateChanged(auth, (user) => {
-  if (user) {
+  if (user) { // USUARIO LOGADO
     irParaTodo()
-    // console.log(user.email)
     const formParaFazer = document.getElementById('form-para-fazer')
     const formFazendo = document.getElementById('form-fazendo')
-    let sinal
+
     formParaFazer.onsubmit = e => {
       const tarefa = formParaFazer.children[0]
       e.preventDefault()
       criarTarefa(tarefa.value, user.email, 0)
       tarefa.value = ''
-      sinal = true
+      criouTarefa = true
     }
     
     formFazendo.onsubmit = e => {
@@ -270,7 +293,7 @@ onAuthStateChanged(auth, (user) => {
       e.preventDefault()
       criarTarefa(tarefa.value, user.email, 1)
       tarefa.value = ''
-      sinal = true
+      criouTarefa = true
     }
 
     const tarefas = query(collection(db, "Tarefas"), where("usuario", "==", user.email))
@@ -279,47 +302,28 @@ onAuthStateChanged(auth, (user) => {
         let status = change.doc.data().status
         let tarefaID = change.doc.id
         let tarefaNome = change.doc.data().nome
-        let inicio
-
+        
         if (change.type === "added" || change.type === "modified") {
-          change.type === "added" && change.type != "modified" ? inicio = true : inicio = false       
-
+          console.clear()
           if(status == 0){
-            if(inicio){
-              inicio = false
-            }
-
             carregarTarefa(tarefaNome, colunaFazer, status)
-            if(sinal){
-              
-            }
-            atualizarTarefa('avancar', tarefaID, tarefaNome, 0, 1, colunaFazendo, inicio)
+            atualizarTarefa('avancar', tarefaID, tarefaNome, 0, 1)
 
           } else if(status == 1){
-            if(inicio){
-              inicio = false
-            }
             carregarTarefa(tarefaNome, colunaFazendo, status)
-            atualizarTarefa('voltar', tarefaID, tarefaNome, 1, 0, colunaFazer, inicio)
+            atualizarTarefa('voltar', tarefaID, tarefaNome, 1, 0)
 
           } else {
             carregarTarefa(tarefaNome, colunaFeito, status)
           }
-
           verificarCheckbox(tarefaID, tarefaNome)
+          removerDuplicatas(tarefaNome)
           deletarTarefa(tarefaID, tarefaNome)
         } 
-        
-        if (change.type === "modified") {
-          console.log('modified')
-        
-        }
       })
     })
 
-  } else {
-    console.log('Não tem ninguém aqui!')
-    mensagem('Usuário deslogado!', true)
+  } else { // USUARIO DESLOGADO
     sairDoTodo()
     colunaFazer.children[1].innerHTML = ''
     colunaFazendo.children[1].innerHTML = ''
