@@ -24,7 +24,7 @@ const mensagem = (texto, status) => {
   status ? cor = "#2d6cea" : cor = "rgb(187, 15, 50)"
   Toastify({
     text: texto,
-    duration: 5000,
+    duration: 2000,
     newWindow: true,
     close: true,
     gravity: "top",
@@ -65,13 +65,16 @@ formCadastro.onsubmit = e => {
 // LOGIN
 
 const logar = () => {
-  const email = document.getElementById('email-login').value
-  const senha = document.getElementById('password-login').value
+  const email = document.getElementById('email-login')
+  const senha = document.getElementById('password-login')
 
-  signInWithEmailAndPassword(auth, email, senha)
+  signInWithEmailAndPassword(auth, email.value, senha.value)
   .then(() => {
     mensagem('Usuário logado com sucesso!', true)
     irParaTodo()
+
+    email.value = ''
+    senha.value = ''
   })
   .catch((error) => {
     if(error.message == 'Firebase: Error (auth/wrong-password).'){ mensagem('Email ou senha incorretos!', false) }
@@ -87,8 +90,10 @@ formLogin.onsubmit = e => {
 // LOGOUT
 
 const deslogar = () => signOut(auth).then(() => {
-  sairDoTodo()
   mensagem('Usuário deslogado!', true)
+  sairDoTodo()
+  setTimeout(() => window.location.reload(), 2050)
+  
 })
 
 const botaoDeslogar = document.getElementById('botao-deslogar')
