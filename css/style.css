@@ -1,7 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Rowdies:wght@300;400;700&display=swap');
+
 * {
     margin: 0;
     padding: 0;
-    font-family: 'Montserrat', 'Avenir', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'Rowdies', cursive;
     box-sizing: border-box;
     color: var(--texto);
 }
@@ -37,7 +39,8 @@ body button {
 
 #titulo > h1 {
     align-self: center;
-    font-size: 3rem;
+    font-size: 3.8rem;
+    text-shadow: 1px 1px 1px #101929a4;
 }
 
 #titulo > button {
@@ -140,10 +143,13 @@ body button {
 
 .botao-deletar {
     font-weight: bolder;
-    color: white;
     background-color: var(--botao-deletar);
     font-size: 1.04rem;
     transition: .3s;
+}
+
+.botao-deletar > i {
+    color: white;
 }
 
 .botao-deletar:hover {
@@ -156,10 +162,13 @@ body button {
 
 .botao-avancar {
     font-weight: bolder;
-    color: white;
     background-color: var(--botao-avancar);
     font-size: 1.04rem;
     transition: .3s;
+}
+
+.botao-avancar > i {
+    color: white;
 }
 
 .botao-avancar:hover, .submit-modal:hover {

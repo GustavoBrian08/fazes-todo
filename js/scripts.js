@@ -122,20 +122,25 @@ const carregarTarefa = (nomeDaTarefa, coluna, statusTarefa) => {
   const containerBotoes = document.createElement('div')
   const nomeTarefa = document.createElement('p')
   const botaoDelete = document.createElement('button')
+  const iconDelete = document.createElement('i')
 
   tarefa.classList.add('tarefa')
   containerTarefa.classList.add('container-tarefa')
   containerBotoes.classList.add('container-tarefa')
   botaoDelete.classList.add('botao-deletar')
   nomeTarefa.classList.add('nome-tarefa')
-  botaoDelete.innerHTML = 'X'
+  iconDelete.classList.add('fa-solid')
+  iconDelete.classList.add('fa-trash-can')
   nomeTarefa.innerHTML = nomeDaTarefa
 
   if(statusTarefa == 0){
     const botaoAvancar = document.createElement('button')
+    const icon = document.createElement('i')
     botaoAvancar.classList.add('botao-avancar')
     botaoAvancar.classList.add('avancar')
-    botaoAvancar.innerHTML = '>>'
+    icon.classList.add('fa-solid')
+    icon.classList.add('fa-right-long')
+    botaoAvancar.appendChild(icon)
     containerBotoes.appendChild(botaoAvancar)
   } else {
     const checkbox = document.createElement('input')
@@ -145,9 +150,12 @@ const carregarTarefa = (nomeDaTarefa, coluna, statusTarefa) => {
 
     if(statusTarefa == 1){
       const botaoVoltar = document.createElement('button')
+      const icon = document.createElement('i')
       botaoVoltar.classList.add('botao-avancar')
       botaoVoltar.classList.add('voltar')
-      botaoVoltar.innerHTML = '<<'
+      icon.classList.add('fa-solid')
+      icon.classList.add('fa-left-long')
+      botaoVoltar.appendChild(icon)
       containerBotoes.appendChild(botaoVoltar)
     } else {
       checkbox.checked = true
@@ -157,6 +165,7 @@ const carregarTarefa = (nomeDaTarefa, coluna, statusTarefa) => {
   tarefa.appendChild(containerTarefa)
   tarefa.appendChild(containerBotoes)
   containerTarefa.appendChild(nomeTarefa)
+  botaoDelete.appendChild(iconDelete)
   containerBotoes.appendChild(botaoDelete)
   coluna.children[1].appendChild(tarefa)
 }
