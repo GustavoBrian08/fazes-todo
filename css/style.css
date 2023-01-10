@@ -110,6 +110,7 @@ body button {
     border-radius: 13px;
     box-shadow: 0px 0px 10px 5px #111a2b77;
     transition: .3s;
+    cursor: pointer;
 }
 
 .tarefa:hover {
@@ -160,7 +161,7 @@ body button {
     background-color: #a33053;
 }
 
-.botao-avancar {
+.botao-avancar, #editar-descricao {
     font-weight: bolder;
     background-color: var(--botao-avancar);
     font-size: 1.04rem;
@@ -171,11 +172,11 @@ body button {
     color: white;
 }
 
-.botao-avancar:hover, .submit-modal:hover {
+.botao-avancar:hover, .submit-modal:hover, #editar-descricao:hover {
     box-shadow: 0px 0px 19px 2px #2d6ceaa8;
 }
 
-.botao-avancar:active, .submit-modal:active {
+.botao-avancar:active, .submit-modal:active, #editar-descricao:active {
     background-color: #1f499b;
 }
 
@@ -293,4 +294,87 @@ body button {
     font-size: 1rem;
     text-decoration: underline;
     cursor: pointer;
+}
+
+/* MODAL DA TAREFA */
+
+#tarefa-aberta-bg {
+    position: absolute;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.568);
+}
+
+#tarefa-modal {
+    background-color: var(--fundo);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 60vh;
+    min-width: 45vw;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+#header-modal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+}
+
+#header-modal h2 {
+    font-size: 2rem;
+}
+
+#header-modal button {
+    margin: 0 !important;
+    background-color: transparent;
+    border: none;
+    font-size: 2rem;
+}
+
+#header-modal button i:hover {
+    transition: .3s;
+    color: var(--botao-deletar);
+    text-shadow: 0px 0px 19px #d53e6ba8;
+}
+
+#tarefa-modal > p {
+    margin-top: 10px;
+}
+
+#descricao {
+    margin-top: 50px;
+    width: 80%;
+    border-radius: 15px;
+    font-size: 1.2rem;
+    padding: 15px;
+    background-color: #2b3a4e8e;
+    border: none;
+    color: rgb(214, 210, 210);
+    resize: none;
+}
+
+#descricao:focus {
+    outline: 1px solid var(--texto);
+}
+
+#data-tarefa {
+    color: rgb(214, 210, 210);
+}
+
+#editar-descricao {
+    margin-top: 15px;
+    padding: 7px;
+    background-color: var(--botao-avancar);
+    border: none;
+    border-radius: 5px;
+    color: white;
 }

@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-app.js"
-import { getFirestore, collection, addDoc, query, where, onSnapshot, serverTimestamp, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-firestore.js"
+import { getFirestore, collection, addDoc, query, where, onSnapshot, Timestamp, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-firestore.js"
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-auth.js"
 
 // CONFIG DO FIREBASE
@@ -110,7 +110,8 @@ const criarTarefa = async (tarefa, email, coluna) => {
       nome: tarefa,
       usuario: email,
       status: coluna,
-      timestamp: serverTimestamp()
+      descricao: '',
+      timestamp: Timestamp.now()
     })
     
   } catch (e) {
@@ -281,6 +282,54 @@ const sairDoTodo = function(){
   irParaLogin()
 }
 
+// MODAL TAREFA
+
+const abrirModalTarefa = () => {
+  const modalBg = document.getElementById('tarefa-aberta-bg')
+  modalBg.style.display = 'flex'
+}
+
+const fecharModalTarefa = () => {
+  const modalBg = document.getElementById('tarefa-aberta-bg')
+  modalBg.style.display = 'none'
+}
+
+const descricao = document.getElementById('descricao')
+const atualizarDescricao = async (id) => {
+  await updateDoc(doc(db, "Tarefas", id), {
+    descricao: descricao.value
+  })
+}
+
+const visualizarTarefa = (nomeTarefa, data, textoDescricao, tarefaID) => {
+  const tarefa = document.getElementsByClassName('tarefa')
+  const nomeTarefaModal = document.getElementById('nome-tarefa-modal')
+  const dataTarefa = document.getElementById('data-tarefa')
+  for(let i = 0; i < tarefa.length; i++){
+    const tarefaSelecionada = tarefa[i]
+    tarefaSelecionada.addEventListener('click', (event) => {
+      if ((event.target == tarefaSelecionada || event.target.innerText == tarefaSelecionada.children[0].innerText) && event.target.innerText == nomeTarefa){
+        abrirModalTarefa()
+        
+        nomeTarefaModal.innerHTML = tarefaSelecionada.children[0].innerText
+        descricao.value = textoDescricao
+        dataTarefa.innerHTML = data
+
+        const editarDescricao = document.getElementById('editar-descricao')
+        editarDescricao.onclick = (event) => {
+          event.preventDefault()
+          const tituloModal = editarDescricao.parentElement.children[0].children[1].innerText
+
+          if(tituloModal == nomeTarefa){
+            atualizarDescricao(tarefaID)
+            setTimeout(() => window.location.reload(), 500)
+          }
+        }
+      }
+    })
+  }
+}
+
 
 // STATUS DO USUÁRIO
 
@@ -316,6 +365,8 @@ onAuthStateChanged(auth, (user) => {
         let status = change.doc.data().status
         let tarefaID = change.doc.id
         let tarefaNome = change.doc.data().nome
+        let timestamp = new Date(change.doc.data().timestamp.toDate()).toLocaleString()
+        let descricaoTarefa = change.doc.data().descricao
         
         if (change.type === "added" || change.type === "modified") {
           console.clear()
@@ -331,9 +382,16 @@ onAuthStateChanged(auth, (user) => {
             carregarTarefa(tarefaNome, colunaFeito, status)
           }
           verificarCheckbox(tarefaID, tarefaNome)
-          removerDuplicatas(tarefaNome)
+          // removerDuplicatas(tarefaNome)
           deletarTarefa(tarefaID, tarefaNome)
+          visualizarTarefa(tarefaNome, timestamp, descricaoTarefa, tarefaID)
         } 
+        
+        const botaoFecharModal = document.getElementById('fechar-modal')
+        const modalTarefaBg = document.getElementById('tarefa-aberta-bg')
+        
+        botaoFecharModal.onclick = () => fecharModalTarefa(tarefaID)
+        modalTarefaBg.onclick = event => { event.target == modalTarefaBg ? fecharModalTarefa(tarefaID) : false }
       })
     })
 

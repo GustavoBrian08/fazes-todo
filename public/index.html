@@ -46,7 +46,7 @@
     </div>
     <div id="container">
         <div id="coluna-para-fazer" class="colunas">
-            <h3>Para Fazer</h3>
+            <h3>Vais Fazer</h3>
             <div class="lista-tarefas">
             </div>
             <form id="form-para-fazer" autocomplete="off">
@@ -55,7 +55,7 @@
             </form>
         </div>
         <div id="coluna-fazendo" class="colunas">
-            <h3>Fazendo</h3>
+            <h3>Estais Fazendo</h3>
             <div class="lista-tarefas">
             </div>
             <form id="form-fazendo" autocomplete="off">
@@ -68,6 +68,19 @@
             <div class="lista-tarefas">
             </div>
         </div>
+    </div>
+    <!-- MODAL DA TAREFA -->
+    <div id="tarefa-aberta-bg">
+        <form id="tarefa-modal">
+            <div id="header-modal">
+                <div> </div>
+                <h2 id="nome-tarefa-modal">Tarefa Aberta</h2>
+                <button type="button" id="fechar-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <textarea id="descricao" cols="30" rows="10"></textarea>
+            <p>Criada em: <span id="data-tarefa"></span></p>
+            <button type="submit" id="editar-descricao">Salvar</button>
+        </form>
     </div>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </body>
