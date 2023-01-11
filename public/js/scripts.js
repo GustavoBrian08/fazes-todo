@@ -105,17 +105,19 @@ botaoDeslogar.onclick = () => deslogar()
 // CREATE
 
 const criarTarefa = async (tarefa, email, coluna) => {
-  try {
-    await addDoc(collection(db, "Tarefas"), {
-      nome: tarefa,
-      usuario: email,
-      status: coluna,
-      descricao: '',
-      timestamp: Timestamp.now()
-    })
-    
-  } catch (e) {
-    mensagem(`Erro ao criar tarefa: ${e}`, false)
+  if(tarefa.length != 0 && tarefa != ' '){
+    try {
+      await addDoc(collection(db, "Tarefas"), {
+        nome: tarefa,
+        usuario: email,
+        status: coluna,
+        descricao: '',
+        timestamp: Timestamp.now()
+      })
+      
+    } catch (e) {
+      mensagem(`Erro ao criar tarefa: ${e}`, false)
+    }
   }
 }
 
